@@ -21,7 +21,7 @@ const App = () => {
                         messages: [{role: "user", content: newQuestion}],
                 };
 
-		const response = await openai.createCompletion(options);
+		const response = await openai.createChatCompletion(options);
 
 		if (response.data.choices) {
 			setStoredValues([
