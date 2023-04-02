@@ -47,7 +47,7 @@ const App = () => {
 	return (
 		<div>
 			<div className="header-section">
-				<h1>ChatGPT CLONE 🤖</h1>
+				<h1>AskGPT.eth</h1>
 				{storedValues.length < 1 && (
 					<p>
 						I am an automated question and answer system, designed to assist you
