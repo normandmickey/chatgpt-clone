@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 const App = () => {
 	const configuration = new Configuration({
+		organization: process.env.OPENAI_ORGANIZATION,
 		apiKey: process.env.REACT_APP_OPENAI_API_KEY,
 	});
 
@@ -16,27 +17,17 @@ const App = () => {
 
 	const generateResponse = async (newQuestion, setNewQuestion) => {
 		let options = {
-			model: 'text-davinci-003',
-			temperature: 0,
-			max_tokens: 1000,
-			top_p: 1,
-			frequency_penalty: 0.0,
-			presence_penalty: 0.0,
-			stop: ['/'],
-		};
+                        model: 'gpt-3.5-turbo',
+                        messages: [{role: "user", content: newQuestion}],
+                };
 
-		let completeOptions = {
-			...options,
-			prompt: newQuestion,
-		};
-
-		const response = await openai.createCompletion(completeOptions);
+		const response = await openai.createCompletion(options);
 
 		if (response.data.choices) {
 			setStoredValues([
 				{
 					question: newQuestion,
-					answer: response.data.choices[0].text,
+					answer: response.data.choices[0].message.content,
 				},
 				...storedValues,
 			]);
@@ -50,11 +41,6 @@ const App = () => {
 				<h1>AskGPT.eth</h1>
 				{storedValues.length < 1 && (
 					<p>
-						I am an automated question and answer system, designed to assist you
-						in finding relevant information. You are welcome to ask me any
-						queries you may have, and I will do my utmost to offer you a
-						reliable response. Kindly keep in mind that I am a machine and
-						operate solely based on programmed algorithms.
 					</p>
 				)}
 			</div>
