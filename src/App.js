@@ -40,8 +40,8 @@ const App = () => {
 			<div className="header-section">
 				<h1>AskGPT.eth</h1>
 				{storedValues.length < 1 && (
-					<p>
-					</p>
+					 <p>
+                                         </p>
 				)}
 			</div>
 
