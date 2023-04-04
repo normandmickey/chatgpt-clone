@@ -1,9 +1,12 @@
+
 import { Configuration, OpenAIApi } from 'openai';
 
 import FormSection from './components/FormSection';
 import AnswerSection from './components/AnswerSection';
 
 import { useState } from 'react';
+
+const history = [];
 
 const App = () => {
 	const configuration = new Configuration({
@@ -12,18 +15,25 @@ const App = () => {
 	});
 
 	const openai = new OpenAIApi(configuration);
-
 	const [storedValues, setStoredValues] = useState([]);
-
-	const generateResponse = async (newQuestion, setNewQuestion) => {
+        
+        const messages = [];
+        for (const [input_text, completion_text] of history) {
+          messages.push({ role: "user", content: input_text });
+          messages.push({ role: "assistant", content: completion_text });
+        }
+	
+        const generateResponse = async (newQuestion, setNewQuestion) => {
+                messages.push({ role: "user", content: newQuestion });
 		let options = {
                         model: 'gpt-3.5-turbo',
-                        messages: [{role: "user", content: newQuestion}],
+                        messages: messages,
                 };
 
 		const response = await openai.createChatCompletion(options);
 
 		if (response.data.choices) {
+                        history.push([newQuestion, response.data.choices[0].message.content]);
 			setStoredValues([
 				{
 					question: newQuestion,
@@ -31,7 +41,7 @@ const App = () => {
 				},
 				...storedValues,
 			]);
-			setNewQuestion('');
+                        setNewQuestion('');
 		}
 	};
 
