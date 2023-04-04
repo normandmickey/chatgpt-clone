@@ -15,6 +15,13 @@ const App = () => {
 	});
 
 	const openai = new OpenAIApi(configuration);
+
+        const moderationConfiguration = new Configuration({
+                apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+        });
+
+        const moderationOpenai = new OpenAIApi(moderationConfiguration);
+
 	const [storedValues, setStoredValues] = useState([]);
         
         const messages = [];
@@ -33,11 +40,25 @@ const App = () => {
 		const response = await openai.createChatCompletion(options);
 
 		if (response.data.choices) {
-                        history.push([newQuestion, response.data.choices[0].message.content]);
+                        var finalAnswer = "";
+                        var flagged = false;
+                        const tempAnswer = response.data.choices[0].message.content;
+                        const moderationResponse = await moderationOpenai.createModeration({
+                          input: tempAnswer,
+                        });
+                        flagged = moderationResponse.data.results[0].flagged;
+                       
+                        if (flagged) {
+                         finalAnswer = "Response flagged by OpenAI moderation";
+                        } else {
+                         finalAnswer = tempAnswer;
+                        }
+
+                        history.push([newQuestion, finalAnswer]);
 			setStoredValues([
 				{
 					question: newQuestion,
-					answer: response.data.choices[0].message.content,
+					answer: finalAnswer,
 				},
 				...storedValues,
 			]);
