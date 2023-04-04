@@ -33,9 +33,9 @@ const FormSection = ({ generateResponse }) => {
                 Ask GPT
                 {newQuestion ? ( 
                  <ThreeDots
-                 width="100"
-                 height="100"
-                 color="red"
+                 width=""
+                 height="20"
+                 color="#CA228C"
                  ariaLabel="loading"
                 />
                 ) : (
