@@ -33,7 +33,7 @@ const App = () => {
         const generateResponse = async (newQuestion, setNewQuestion) => {
                 messages.push({ role: "user", content: newQuestion });
 		let options = {
-                        model: 'gpt-3.5-turbo',
+                        model: process.env.OPENAI_MODEL,
                         messages: messages,
                 };
 
