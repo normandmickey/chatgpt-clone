@@ -8,7 +8,6 @@ import { useState } from 'react';
 
 import { ethers } from "ethers";
 import paywallArtifact from "./Paywall.json";
-import React, { useEffect } from "react";
 
 
 const history = [];
@@ -20,9 +19,9 @@ const App = () => {
 	const [paywall, setPaywall] = useState(null);
 
         useEffect(() => {
-	loadAccounts();
-	loadPaywall();
-	}, []);
+loadAccounts();
+loadPaywall();
+}, []);
 
 const loadAccounts = async () => {
 if (typeof window.ethereum !== "undefined") {
@@ -123,34 +122,21 @@ console.log("Error: ", err);
 		}
 	};
 
-return (
-<div className="App">
-<h1>Polygon Paywall</h1>
-{!accessible ? (
-<button onClick={handleAccess}>Pay 0.01 Matic to access content</button>
-) : (
-<div>
-<h2></h2>
-<p>You have successfully unlocked AskGPT.eth!</p>
-<div>
-                        <div className="header-section">
-                                <h1>AskGPT.eth</h1>
-                                {storedValues.length < 1 && (
-                                         <p>
+	return (
+		<div>
+			<div className="header-section">
+				<h1>AskGPT.eth</h1>
+				{storedValues.length < 1 && (
+					 <p>
                                          </p>
-                                )}
-                        </div>
+				)}
+			</div>
 
-                        <FormSection generateResponse={generateResponse} />
+			<FormSection generateResponse={generateResponse} />
 
-                        {storedValues.length > 0 && <AnswerSection storedValues={storedValues} />}
-                </div>
-
-</div>
-)}
-</div>
-);
-
+			{storedValues.length > 0 && <AnswerSection storedValues={storedValues} />}
+		</div>
+	);
 };
 
 export default App;
