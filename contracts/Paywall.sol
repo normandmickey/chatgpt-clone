@@ -10,9 +10,20 @@ constructor() {
 owner = payable(msg.sender);
 }
 
+
 function grantAccess() public payable {
-require(msg.value >= 0.01 ether, "Not enough Ether sent.");
+require(msg.value >= 1.00 ether, "Not enough Ether sent.");
 owner.transfer(msg.value);
 emit AccessGranted(msg.sender);
 }
+
+function getBalance() public view returns(uint) {
+    return address(this).balance;
+}
+
+function withdrawAll(address payable _to) public {
+require(owner == _to);
+_to.transfer(address(this).balance);
+}
+
 }

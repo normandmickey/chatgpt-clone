@@ -34,7 +34,7 @@ setAccount(accounts[0]);
 const loadPaywall = async () => {
 if (typeof window.ethereum !== "undefined") {
 const provider = new ethers.providers.Web3Provider(window.ethereum);
-const contractAddress = "0xc63f6c37d7aa67E8e61400668Db42910c9232095"; // Replace with your contract's address
+const contractAddress = "0x82cd7c3e574966EA16e55Ab541B613854f7A4419"; // Replace with your contract's address
 const paywallContract = new ethers.Contract(contractAddress, paywallArtifact.abi, provider);
 
 try {
@@ -50,7 +50,7 @@ console.log("Error: ", err);
 const handleAccess = async () => {
 if (paywall) {
 try {
-const valueToSend = ethers.utils.parseUnits("0.01", "ether");
+const valueToSend = ethers.utils.parseUnits("1.00", "ether");
 const tx = await paywall.grantAccess({ value: valueToSend });
 const receipt = await tx.wait();
 
@@ -126,9 +126,9 @@ console.log("Error: ", err);
 return (
 <div className="App">
 <h1>Polygon Paywall for AskGPT.eth.limo</h1>
-<p>0.01 Matic per session with GPT-3.5-Turbo</p>
+<p>1.00 Matic per session with GPT-3.5-Turbo</p>
 {!accessible ? (
-<button onClick={handleAccess}>Pay 0.01 Matic to access content</button>
+<button onClick={handleAccess}>Pay 1.00 Matic to access content</button>
 ) : (
 <div>
 <h2></h2>
