@@ -12,7 +12,7 @@ owner = payable(msg.sender);
 
 
 function grantAccess() public payable {
-require(msg.value >= 1.00 ether, "Not enough Ether sent.");
+require(msg.value >= 0.50 ether, "Not enough Ether sent.");
 owner.transfer(msg.value);
 emit AccessGranted(msg.sender);
 }

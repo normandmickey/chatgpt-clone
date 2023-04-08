@@ -10,7 +10,6 @@ import { ethers } from "ethers";
 import paywallArtifact from "./Paywall.json";
 import React, { useEffect } from "react";
 
-
 const history = [];
 
 const App = () => {
@@ -34,7 +33,7 @@ setAccount(accounts[0]);
 const loadPaywall = async () => {
 if (typeof window.ethereum !== "undefined") {
 const provider = new ethers.providers.Web3Provider(window.ethereum);
-const contractAddress = "0x82cd7c3e574966EA16e55Ab541B613854f7A4419"; // Replace with your contract's address
+const contractAddress = process.env.REACT_APP_POLYGON_CONTRACT_ADDRESS; // Replace with your contract's address
 const paywallContract = new ethers.Contract(contractAddress, paywallArtifact.abi, provider);
 
 try {
@@ -50,7 +49,7 @@ console.log("Error: ", err);
 const handleAccess = async () => {
 if (paywall) {
 try {
-const valueToSend = ethers.utils.parseUnits("1.00", "ether");
+const valueToSend = ethers.utils.parseUnits("0.50", "ether");
 const tx = await paywall.grantAccess({ value: valueToSend });
 const receipt = await tx.wait();
 
@@ -67,7 +66,7 @@ console.log("Error: ", err);
         //end Paywall
 
 	const configuration = new Configuration({
-		organization: process.env.OPENAI_ORGANIZATION,
+		organization: process.env.REACT_APP_OPENAI_ORGANIZATION,
 		apiKey: process.env.REACT_APP_OPENAI_API_KEY,
 	});
 
@@ -90,7 +89,7 @@ console.log("Error: ", err);
         const generateResponse = async (newQuestion, setNewQuestion) => {
                 messages.push({ role: "user", content: newQuestion });
 		let options = {
-                        model: 'gpt-4',
+                        model: process.env.REACT_APP_OPENAI_MODEL,
                         messages: messages,
                 };
 
@@ -126,9 +125,10 @@ console.log("Error: ", err);
 return (
 <div className="App">
 <h1>Polygon Paywall for AskGPT.eth.limo</h1>
-<p>1.00 Matic per session with GPT-3.5-Turbo</p>
+<p>0.50 Matic per session with GPT-3.5-Turbo</p>
+<p>Connect your Metamask wallet to the Polygon Mainnet</p>
 {!accessible ? (
-<button onClick={handleAccess}>Pay 1.00 Matic to access content</button>
+<button className="btn" onClick={handleAccess}>Pay 0.50 Matic to access AskGPT.eth</button>
 ) : (
 <div>
 <h2></h2>

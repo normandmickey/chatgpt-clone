@@ -7,6 +7,11 @@ module.exports = {
     polygon: {
       url: `${process.env.ALCHEMY_POLYGON_URL}`,
       accounts: [`0x${process.env.PRIVATE_KEY}`],
-    }
+    },
+    goerli: {
+      url: `${process.env.ALCHEMY_GOERLI_URL}`,
+      accounts: [`0x${process.env.PRIVATE_KEY}`],
+    },
+
   }
 };
