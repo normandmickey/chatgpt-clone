@@ -33,7 +33,7 @@ setAccount(accounts[0]);
 const loadPaywall = async () => {
 if (typeof window.ethereum !== "undefined") {
 const provider = new ethers.providers.Web3Provider(window.ethereum);
-const contractAddress = process.env.REACT_APP_POLYGON_CONTRACT_ADDRESS; // Replace with your contract's address
+const contractAddress = "0x9C7A5F14fB535269577798f5e3AcAAc0D450E989"; // Replace with your contract's address
 const paywallContract = new ethers.Contract(contractAddress, paywallArtifact.abi, provider);
 
 try {
