@@ -125,8 +125,8 @@ console.log("Error: ", err);
 return (
 <div className="App">
 <h1>Polygon Paywall for AskGPT.eth.limo</h1>
-<p>0.50 Matic per session with GPT-3.5-Turbo</p>
-<p>Connect your Metamask wallet to the Polygon Mainnet</p>
+<p>0.50 Matic per session with GPT-4</p>
+<p>Connect your Metamask wallet to the Polygon Mainnet and refresh this page.</p>
 {!accessible ? (
 <button className="btn" onClick={handleAccess}>Pay 0.50 Matic to access AskGPT.eth</button>
 ) : (
