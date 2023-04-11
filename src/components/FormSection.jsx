@@ -27,7 +27,6 @@ const FormSection = ({ generateResponse }) => {
             ></textarea>
             <button className="btn" 
               onClick={() => {
-                paywall.loadCheckoutModal();
                 toggleLoading(); 
                 generateResponse(newQuestion, setNewQuestion);
               }}>
