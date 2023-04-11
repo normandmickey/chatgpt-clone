@@ -8,7 +8,6 @@ import AnswerSection from './components/AnswerSection';
 import { useState } from 'react';
 import networks from '@unlock-protocol/networks'
 
-// See https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
 const paywallConfig = {
   "pessimistic": true,
     "locks": {
@@ -17,7 +16,7 @@ const paywallConfig = {
            "name": "AskGPT-TEST4"
         }
     },
-    "icon": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.10UUFNA8oLdFdDpzt-Em_QHaHa%26pid%3DApi&f=1",
+    "icon": "",
     "metadataInputs": [
         {
         }
@@ -27,23 +26,24 @@ const paywallConfig = {
 // Configure networks to use
 // You can also use @unlock-protocol/networks for convenience...
 const networkConfigs = {
-  1: { 
+  1: {
     provider: networks[1],
   },
-  100: { 
+  100: {
     provider: networks[100],
     // configuration for gnosis chain... etc
   },
   // etc
 }
-// Pass a provider. You can also use a provider from a library such as Magic.link or privy.io
+// Pass a provider. You can also use a provider from a library such as Magic.li>
 // If no provider is set, the library uses window.ethereum
 const provider = window.ethereum
 
 const paywall = new Paywall(paywallConfig, networkConfigs, provider)
 
 // Loads the checkout UI
-paywall.loadCheckoutModal()
+paywall.loadCheckoutModal();
+
 
 const history = [];
 
@@ -114,7 +114,6 @@ return (
 					</p>
 				)}
 			</div>
-
 			<FormSection generateResponse={generateResponse} />
 
 			{storedValues.length > 0 && <AnswerSection storedValues={storedValues} />}
