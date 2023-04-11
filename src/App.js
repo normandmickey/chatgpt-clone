@@ -1,70 +1,53 @@
 
 import { Configuration, OpenAIApi } from 'openai';
+import { Paywall } from '@unlock-protocol/paywall'
 
 import FormSection from './components/FormSection';
 import AnswerSection from './components/AnswerSection';
 
 import { useState } from 'react';
+import networks from '@unlock-protocol/networks'
 
-import { ethers } from "ethers";
-import paywallArtifact from "./Paywall.json";
-import React, { useEffect } from "react";
+// See https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
+const paywallConfig = {
+  "pessimistic": true,
+    "locks": {
+        "0xf2a7513175c137688a1a144f8642c9766db29ad1": {
+           "network": 100,
+           "name": "AskGPT-TEST4"
+        }
+    },
+    "icon": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.10UUFNA8oLdFdDpzt-Em_QHaHa%26pid%3DApi&f=1",
+    "metadataInputs": [
+        {
+        }
+    ]
+  }
+
+// Configure networks to use
+// You can also use @unlock-protocol/networks for convenience...
+const networkConfigs = {
+  1: { 
+    provider: networks[1],
+  },
+  100: { 
+    provider: networks[100],
+    // configuration for gnosis chain... etc
+  },
+  // etc
+}
+// Pass a provider. You can also use a provider from a library such as Magic.link or privy.io
+// If no provider is set, the library uses window.ethereum
+const provider = window.ethereum
+
+const paywall = new Paywall(paywallConfig, networkConfigs, provider)
+
+// Loads the checkout UI
+paywall.loadCheckoutModal()
 
 const history = [];
 
 const App = () => {
-	//Paywall
-        const [account, setAccount] = useState("");
-	const [accessible, setAccessible] = useState(false);
-	const [paywall, setPaywall] = useState(null);
-
-        useEffect(() => {
-	loadAccounts();
-	loadPaywall();
-	}, []);
-
-const loadAccounts = async () => {
-if (typeof window.ethereum !== "undefined") {
-const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-setAccount(accounts[0]);
-}
-};
-
-const loadPaywall = async () => {
-if (typeof window.ethereum !== "undefined") {
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const contractAddress = "0x9C7A5F14fB535269577798f5e3AcAAc0D450E989"; // Replace with your contract's address
-const paywallContract = new ethers.Contract(contractAddress, paywallArtifact.abi, provider);
-
-try {
-const signer = provider.getSigner();
-const signedPaywallContract = paywallContract.connect(signer);
-setPaywall(signedPaywallContract);
-} catch (err) {
-console.log("Error: ", err);
-}
-}
-};
-
-const handleAccess = async () => {
-if (paywall) {
-try {
-const valueToSend = ethers.utils.parseUnits("0.50", "ether");
-const tx = await paywall.grantAccess({ value: valueToSend });
-const receipt = await tx.wait();
-
-if (receipt.status === 1) {
-setAccessible(true);
-}
-} catch (err) {
-console.log("Error: ", err);
-}
-}
-};
-
-
-        //end Paywall
-
 	const configuration = new Configuration({
 		organization: process.env.REACT_APP_OPENAI_ORGANIZATION,
 		apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -123,35 +106,20 @@ console.log("Error: ", err);
 	};
 
 return (
-<div className="App">
-<h1>Polygon Paywall for AskGPT.eth.limo</h1>
-<p>0.50 Matic per session with GPT-3.5-Turbo</p>
-<p>Connect your Metamask wallet to the Polygon Mainnet</p>
-{!accessible ? (
-<button className="btn" onClick={handleAccess}>Pay 0.50 Matic to access AskGPT.eth</button>
-) : (
-<div>
-<h2></h2>
-<p>You have successfully unlocked AskGPT.eth!</p>
-<div>
-                        <div className="header-section">
-                                <h1>AskGPT.eth</h1>
-                                {storedValues.length < 1 && (
-                                         <p>
-                                         </p>
-                                )}
-                        </div>
+		<div>
+			<div className="header-section">
+				<h1>AskGPT.eth</h1>
+				{storedValues.length < 1 && (
+					<p>
+					</p>
+				)}
+			</div>
 
-                        <FormSection generateResponse={generateResponse} />
+			<FormSection generateResponse={generateResponse} />
 
-                        {storedValues.length > 0 && <AnswerSection storedValues={storedValues} />}
-                </div>
-
-</div>
-)}
-</div>
-);
-
+			{storedValues.length > 0 && <AnswerSection storedValues={storedValues} />}
+		</div>
+	);
 };
 
 export default App;
