@@ -1,12 +1,17 @@
-
+import React from 'react';
 import { Configuration, OpenAIApi } from 'openai';
-import { Paywall } from '@unlock-protocol/paywall'
 
 import FormSection from './components/FormSection';
 import AnswerSection from './components/AnswerSection';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import networks from '@unlock-protocol/networks'
+import { Paywall } from '@unlock-protocol/paywall'
+
+import { ethers } from "ethers";
+//import unlock from "@unlock-protocol/contracts/abis/Unlock";
+
+//import "@unlock-protocol/contracts/dist/Unlock/UnlockV0.sol";
 
 const paywallConfig = {
   "pessimistic": true,
@@ -41,9 +46,7 @@ const provider = window.ethereum
 
 const paywall = new Paywall(paywallConfig, networkConfigs, provider)
 
-// Loads the checkout UI
 paywall.loadCheckoutModal();
-
 
 const history = [];
 
@@ -108,11 +111,12 @@ const App = () => {
 return (
 		<div>
 			<div className="header-section">
-				<h1>AskGPT.eth</h1>
+				<h1>ChatGPT-O-Matic</h1>
 				{storedValues.length < 1 && (
 					<p>
 					</p>
 				)}
+
 			</div>
 			<FormSection generateResponse={generateResponse} />
 

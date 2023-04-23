@@ -27,7 +27,7 @@ const FormSection = ({ generateResponse }) => {
             ></textarea>
             <button className="btn" 
               onClick={() => {
-                toggleLoading(); 
+                toggleLoading();
                 generateResponse(newQuestion, setNewQuestion);
               }}>
                 Ask GPT
